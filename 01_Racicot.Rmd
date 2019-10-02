@@ -1,0 +1,60 @@
+---
+title: "01_Racicot"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
+##Loading tidyverse et les données
+```{r load_packages_tidyverse, message=FALSE}
+library(tidyverse)
+```
+#Données sur la population des prisons aux États-Unis
+```{r loading data}
+prison <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-01-22/incarceration_trends.csv")
+
+
+
+head(prison)
+```
+#Analyse des données
+```{r recent_data}
+filter(prison, year > 2010)
+```
+```{r most_admissions}
+arrange(prison, total_jail_adm)
+```
+
+```{r Relative_jail_pop_pourcentage}
+mutate(prison, relative_jail_pop = total_jail_pop/total_pop*100)
+```
+
+```{r Relative_jail_pop_over_years}
+prison %>%
+  group_by(state, year) %>%
+  mutate(relative_jail_pop = total_jail_pop/total_pop*100) %>%
+  summarise(med_pop = median(relative_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_pop, colour=state)) +
+    geom_line()
+```
+
+```{r Relative_male_jail_pop_over_years}
+prison %>%
+  group_by(state, year) %>%
+  mutate(relative_male_jail_pop = male_jail_pop/total_jail_pop*100) %>%
+  summarise(med_male_pop = median(relative_male_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_male_pop, colour=state)) +
+    geom_line()
+```
+```{r Relative_female_jail_pop_over_years}
+prison %>%
+  group_by(state, year) %>%
+  mutate(relative_female_jail_pop = female_jail_pop/total_jail_pop*100) %>%
+  summarise(med_female_pop = median(relative_female_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_female_pop, colour=state)) +
+    geom_line()
+```
