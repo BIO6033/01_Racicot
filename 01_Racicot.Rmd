@@ -9,11 +9,11 @@ output:
 knitr::opts_chunk$set(echo=TRUE)
 ```
 
-##Loading tidyverse et les données
+## Loading tidyverse et les données
 ```{r load_packages_tidyverse, message=FALSE}
 library(tidyverse)
 ```
-#Données sur la population des prisons aux États-Unis
+# Données sur la population des prisons aux États-Unis
 ```{r loading data}
 prison <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-01-22/incarceration_trends.csv")
 
@@ -21,18 +21,15 @@ prison <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tid
 
 head(prison)
 ```
-#Analyse des données
-```{r recent_data}
-filter(prison, year > 2010)
-```
-```{r most_admissions}
-arrange(prison, total_jail_adm)
-```
 
-```{r Relative_jail_pop_pourcentage}
-mutate(prison, relative_jail_pop = total_jail_pop/total_pop*100)
+# Pourcentage de population relative en prison
+```{r Relative_jail_pop_highest_pourcentage}
+prison %>%
+  mutate(relative_jail_pop = total_jail_pop/total_pop*100) %>%
+  select(year, state, county_name, total_pop, total_jail_pop, relative_jail_pop) %>%
+  arrange(desc(relative_jail_pop))
 ```
-
+# Population relative en prison à travers les années
 ```{r Relative_jail_pop_over_years}
 prison %>%
   group_by(state, year) %>%
@@ -41,7 +38,7 @@ prison %>%
   ggplot(aes(x=year, y=med_pop, colour=state)) +
     geom_line()
 ```
-
+# Population relative d'hommes en prison à travers les années
 ```{r Relative_male_jail_pop_over_years}
 prison %>%
   group_by(state, year) %>%
@@ -50,6 +47,7 @@ prison %>%
   ggplot(aes(x=year, y=med_male_pop, colour=state)) +
     geom_line()
 ```
+# Population relative de femmes en prison à travers les années
 ```{r Relative_female_jail_pop_over_years}
 prison %>%
   group_by(state, year) %>%
@@ -58,7 +56,7 @@ prison %>%
   ggplot(aes(x=year, y=med_female_pop, colour=state)) +
     geom_line()
 ```
-
+# Population relative de personnes noires en prison à travers les années
 ```{r Relative_black_jail_pop_over_years}
 #On peut voir que les données sont incomplètes
 prison %>%
@@ -69,6 +67,7 @@ prison %>%
   ggplot(aes(x=year, y=med_black_pop, colour=state)) +
     geom_line()
 ```
+# Population relative de personnes latino en prison à travers les années
 ```{r Relative_latino_jail_pop_over_years}
 prison %>%
   group_by(state, year) %>%
@@ -78,6 +77,7 @@ prison %>%
   ggplot(aes(x=year, y=med_latino_pop, colour=state)) +
     geom_line()
 ```
+# Population relative de personnes natives en prison à travers les années
 ```{r Relative_native_jail_pop_over_years}
 #Manque beaucoup de données
 prison %>%
@@ -88,6 +88,7 @@ prison %>%
   ggplot(aes(x=year, y=med_native_pop, colour=state)) +
     geom_line()
 ```
+# Population relative de personnes blanches en prison à travers les années
 ```{r Relative_white_jail_pop_over_years}
 prison %>%
   group_by(state, year) %>%
@@ -97,7 +98,7 @@ prison %>%
   ggplot(aes(x=year, y=med_white_pop, colour=state)) +
     geom_line()
 ```
-
+# Population relative de personnes asiatiques en prison à travers les années
 ```{r Relative_asian_jail_pop_over_years}
 prison %>%
   #Manque aussi beaucoup de données
