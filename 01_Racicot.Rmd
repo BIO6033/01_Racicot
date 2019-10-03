@@ -58,3 +58,54 @@ prison %>%
   ggplot(aes(x=year, y=med_female_pop, colour=state)) +
     geom_line()
 ```
+
+```{r Relative_black_jail_pop_over_years}
+#On peut voir que les données sont incomplètes
+prison %>%
+  filter(year>1990) %>% #Aucune données avant 1990
+  group_by(state, year) %>%
+  mutate(relative_black_jail_pop = black_jail_pop/total_jail_pop*100) %>%
+  summarise(med_black_pop = median(relative_black_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_black_pop, colour=state)) +
+    geom_line()
+```
+```{r Relative_latino_jail_pop_over_years}
+prison %>%
+  group_by(state, year) %>%
+  filter(year>1990) %>% #Aucune données avant 1990
+  mutate(relative_latino_jail_pop = latino_jail_pop/total_jail_pop*100) %>%
+  summarise(med_latino_pop = median(relative_latino_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_latino_pop, colour=state)) +
+    geom_line()
+```
+```{r Relative_native_jail_pop_over_years}
+#Manque beaucoup de données
+prison %>%
+  group_by(state, year) %>%
+  filter(year>1990) %>% #Aucune données avant 1990
+  mutate(relative_native_jail_pop = native_jail_pop/total_jail_pop*100) %>%
+  summarise(med_native_pop = median(relative_native_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_native_pop, colour=state)) +
+    geom_line()
+```
+```{r Relative_white_jail_pop_over_years}
+prison %>%
+  group_by(state, year) %>%
+  filter(year>1990) %>% #Aucune données avant 1990
+  mutate(relative_white_jail_pop = white_jail_pop/total_jail_pop*100) %>%
+  summarise(med_white_pop = median(relative_white_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_white_pop, colour=state)) +
+    geom_line()
+```
+
+```{r Relative_asian_jail_pop_over_years}
+prison %>%
+  #Manque aussi beaucoup de données
+  group_by(state, year) %>%
+  filter(year>1990) %>% #Aucune données avant 1990
+  mutate(relative_asian_jail_pop = asian_jail_pop/total_jail_pop*100) %>%
+  summarise(med_asian_pop = median(relative_asian_jail_pop)) %>%
+  ggplot(aes(x=year, y=med_asian_pop, colour=state)) +
+    geom_line()
+```
+
